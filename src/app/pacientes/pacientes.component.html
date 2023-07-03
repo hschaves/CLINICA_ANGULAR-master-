@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="font-family: 'Kanit', sans-serif; font-weight: 400">Cadastrar Paciente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informações do Paciente</ion-card-title>
+      <div *ngIf="mensaje" class="mensaje-exito">{{ mensagem }}</div>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">DNI</ion-label>
+        <ion-input
+          placeholder="000000000X"
+          [(ngModel)]="paciente.dni"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nome</ion-label>
+        <ion-input [(ngModel)]="paciente.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Sobrenome</ion-label>
+        <ion-input [(ngModel)]="paciente.apellidos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">RG</ion-label>
+        <ion-input [(ngModel)]="paciente.nSeguridadSocial"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Data de Nascimento</ion-label>
+        <ion-input
+          type="date"
+          [(ngModel)]="paciente.fechaNacimiento"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Endereço</ion-label>
+        <ion-input [(ngModel)]="paciente.direccion"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Telefone</ion-label>
+        <ion-input
+          type="tel"
+          placeholder="+34-888-888-888"
+          [(ngModel)]="paciente.telefono"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input
+          type="email"
+          [(ngModel)]="paciente.correoElectronico"
+        ></ion-input>
+      </ion-item>
+    </ion-card-content>
+    <ion-button expand="block" (click)="agregarPaciente()"
+      >Adicionar Paciente</ion-button
+    >
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Buscar Paciente</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">DNI</ion-label>
+        <ion-input [(ngModel)]="dniBuscar"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="buscarPacientePorDNI(dniBuscar)"
+        >Buscar</ion-button
+      >
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="pacientesEncontrados.length > 0">
+    <ion-card-header>
+      <ion-card-title>Pacientes Encontrados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let paciente of pacientesEncontrados">
+          <ion-label>{{ paciente.nombre }}</ion-label>
+          <ion-button slot="end" (click)="seleccionarPaciente(paciente)"
+            >Selecionar</ion-button
+          >
+          <ion-button
+            slot="end"
+            color="danger"
+            (click)="borrarPaciente(paciente.id)"
+            >Apagar</ion-button
+          >
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="pacienteSeleccionado">
+    <ion-card-header>
+      <ion-card-title>Modificar Paciente</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">DNI</ion-label>
+        <ion-input [(ngModel)]="pacienteSeleccionado.dni"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nome</ion-label>
+        <ion-input [(ngModel)]="pacienteSeleccionado.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Sobrenome</ion-label>
+        <ion-input [(ngModel)]="pacienteSeleccionado.apellidos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">RG</ion-label>
+        <ion-input
+          [(ngModel)]="pacienteSeleccionado.nSeguridadSocial"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Data de Nascimento</ion-label>
+        <ion-input
+          type="date" 
+          [(ngModel)]="pacienteSeleccionado.fechaNacimiento" 
+          [value]="pacienteSeleccionado.fechaNacimiento | date:'yyyy-MM-dd'">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Endereço</ion-label>
+        <ion-input [(ngModel)]="pacienteSeleccionado.direccion"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Telefone</ion-label>
+        <ion-input [(ngModel)]="pacienteSeleccionado.telefono"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input
+          type="email"
+          [(ngModel)]="pacienteSeleccionado.correoElectronico"
+        ></ion-input>
+      </ion-item>
+    </ion-card-content>
+    <ion-button (click)="modificarPaciente()">Modificar Paciente</ion-button>
+  </ion-card>
+</ion-content>

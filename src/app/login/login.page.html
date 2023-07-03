@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Entrar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" novalidate (ngSubmit)="login()">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>E-mail e Senha:</ion-card-title>
+        <!--<div *ngIf="mensaje" class="mensaje-exito">{{ mensaje }}</div> TODO?: MENSAJE LOGIN OK/NO? -->
+      </ion-card-header>
+      <ion-item>
+        <ion-label position="floating">E-mail</ion-label>
+        <br>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Senha</ion-label>
+        <br>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+    </ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" expand="block">Entrar</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button routerLink="/register" type="button" expand="block">Cadastre-se</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="showError">
+      <ion-col>
+        <p>E-mail ou senha incorretos</p>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

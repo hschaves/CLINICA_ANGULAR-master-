@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Boton menú lateral -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="font-family: 'Kanit', sans-serif; font-weight: 400">Contacto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="6" offset-md="3">
+        <ion-card *ngIf="usuarioRol === 'PACIENTE'">
+          <ion-card-header>
+            <ion-card-title>Formulario de Contacto</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form (ngSubmit)="submitForm()">
+              <ion-item>
+                <ion-label>Fecha de Consulta</ion-label>
+                <ion-input type="text" value="{{ contactForm.fechaConsulta | date: 'dd/MM/yyyy' }}" disabled>
+                </ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Teléfono del Paciente</ion-label>
+                <ion-input name="telefonoPaciente" [(ngModel)]="contactForm.telefonoPaciente"
+                  value="{{ tlfUsuarioActual }}" disabled></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Correo electrónico del Paciente</ion-label>
+                <ion-input name="emailPaciente" [(ngModel)]="contactForm.emailPaciente"
+                  value="{{ correoUsuarioActual }}" disabled></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">DNI del Paciente</ion-label>
+                <ion-input type="text" name="pacienteDni" [(ngModel)]="contactForm.pacienteDni"
+                  value="{{ dniUsuarioActual }}" disabled></ion-input>
+              </ion-item>
+
+
+
+              <ion-item>
+                <ion-label position="floating">Mensaje</ion-label>
+                <ion-textarea name="textoMensaje" [(ngModel)]="contactForm.textoMensaje"></ion-textarea>
+              </ion-item>
+
+              <ion-button expand="full" type="submit">Enviar</ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+
+        
+      </ion-col>
+    </ion-row>
+    <!-- Agregar este elemento para mostrar el mensaje -->
+    <ion-card color="primary" *ngIf="mensaje">
+      <ion-card-content class="ion-text-center">
+        <ion-row>
+          <ion-col>
+            <p>{{ mensaje }}</p>
+            <p>{{ mensajeID }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+</ion-content>

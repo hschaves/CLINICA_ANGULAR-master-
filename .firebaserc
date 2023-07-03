@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ClinicaMassagem": {
+      "hosting": {
+        "app": [
+          "clinicamassagem-gu301536x"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "clinicamassagem-gu301536x"
+  }
+}

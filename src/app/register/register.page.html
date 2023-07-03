@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/landing-page"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="font-family: 'Kanit', sans-serif; font-weight: 400">Cadastre-se</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="type === 'PACIENTE'">
+    <ion-card-header>
+      <ion-card-title>Dados do Paciente</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="informative-text">Preencha o formulário para registrar-se</div>
+      <ion-list>
+        <form [formGroup]="formPaciente" (ngSubmit)="registerPaciente()">
+          <ion-item>
+            <ion-label position="floating">Matricula</ion-label>
+            <ion-input placeholder="000000000X" formControlName="dni"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="formPaciente.controls['dni'].invalid && (formPaciente.controls['dni'].dirty || formPaciente.controls['dni'].touched)">
+            <div class="error-message" *ngIf="formPaciente.controls['dni'].hasError('minlength') || formPaciente.controls['dni'].hasError('maxlength')">A matricula deve conter 9 caracteres.</div>
+            <div class="error-message" *ngIf="formPaciente.controls['dni'].hasError('dniExists')">Matricula já existe.</div>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Nome</ion-label>
+            <ion-input formControlName="nombre"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Sobrenome</ion-label>
+            <ion-input formControlName="apellidos"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">RG</ion-label>
+            <ion-input formControlName="nSeguridadSocial"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="formPaciente.controls['nSeguridadSocial'].invalid && (formPaciente.controls['nSeguridadSocial'].dirty || formPaciente.controls['nSeguridadSocial'].touched)">
+            <div class="error-message" *ngIf="formPaciente.controls['nSeguridadSocial'].hasError('minlength')">No minimo 6 caracteres.</div>
+          </ion-item>
+          <ion-item>
+            <ion-label label="Fixed label" labelPlacement="fixed">Data de nascimento</ion-label>
+            <ion-input type="date" formControlName="fechaNacimiento"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Endereço</ion-label>
+            <ion-input formControlName="direccion"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Telefone</ion-label>
+            <ion-input type="tel" placeholder="(00)00000-0000" formControlName="telefono"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" formControlName="email" placeholder="usuario@email.com"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" formControlName="password" label="Senha" labelPlacement="floating" [counter]="true" maxlength="8"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" formControlName="confirmPassword" label="Confirme a Senha" labelPlacement="floating" [counter]="true" maxlength="8"></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="formPaciente.invalid && (formPaciente.dirty || formPaciente.touched)">
+            Todos os campos são obrigatórios.
+          </div>
+          <ion-button expand="block" type="submit">Cadastrar</ion-button>
+        </form>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="type === 'MEDICO'">
+    <ion-card-header>
+      <ion-card-title>Dados do Profissional</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="informative-text">Preencha o formulário para registrar-se</div>
+      <ion-list>
+        <form [formGroup]="formMedico" (ngSubmit)="registerMedico()">
+          <ion-item>
+            <ion-label position="floating">Matricula</ion-label>
+            <ion-input placeholder="00000000X" formControlName="dni"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="formMedico.controls['dni'].invalid && (formMedico.controls['dni'].dirty || formMedico.controls['dni'].touched)">
+            <div class="error-message" *ngIf="formMedico.controls['dni'].hasError('minlength') || formPaciente.controls['dni'].hasError('maxlength')">A matricula deve conter 9 caracteres.</div>
+            <div class="error-message" *ngIf="formMedico.controls['dni'].hasError('dniExists')">Matricula já existe.</div>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Nome</ion-label>
+            <ion-input formControlName="nombre"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Sobrenome</ion-label>
+            <ion-input formControlName="apellidos"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">CRBM</ion-label>
+            <ion-input formControlName="nColegiado"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-select placeholder="Especialidade" formControlName="especialidad">
+              <ion-select-option *ngFor="let especialidad of especialidades" [value]="especialidad.nombre">
+                {{ especialidad.nombre }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Telefone</ion-label>
+            <ion-input type="tel" placeholder="(00)00000-0000" formControlName="telefono"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">E-mail</ion-label>
+            <ion-input type="email" formControlName="email" placeholder="usuario@email.com"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Senha</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Confirme a Senha</ion-label>
+            <ion-input type="password" formControlName="confirmPassword"></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="formMedico.invalid && (formMedico.dirty || formMedico.touched)">
+            Todos os campos são obrigatórios.
+          </div>
+          <ion-button expand="block" type="submit">Cadastrar</ion-button>
+        </form>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="type !== 'PACIENTE' && type !== 'MEDICO'">
+    <ion-card-header>
+      <ion-card-title>Que tipo de usuário você é?</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

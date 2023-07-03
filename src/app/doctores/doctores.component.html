@@ -1,0 +1,181 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Boton menú lateral -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="font-family: 'Kanit', sans-serif; font-weight: 400">Doctores</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Agregar Doctor</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Agregar Doctor Form -->
+      <ion-item>
+        <ion-label position="floating">DNI</ion-label>
+        <ion-input placeholder="000000000X" [(ngModel)]="doctor.dni"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="doctor.nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Apellidos</ion-label>
+        <ion-input [(ngModel)]="doctor.apellidos"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Número Colegiado</ion-label>
+        <ion-input [(ngModel)]="doctor.nColegiado"></ion-input>
+      </ion-item>
+
+      <ion-item>
+
+        <ion-select placeholder="Especialidad" [(ngModel)]="doctor.especialidad">
+          <!--En el ion-select, se ha agregado el evento (ionChange) para llamar al método
+            loadDoctorsBySpecialty() cada vez que se selecciona una especialidad.
+            Esto asegura que se carguen y muestren los doctores correspondientes
+            a la especialidad seleccionada.-->
+          <ion-select-option *ngFor="let especialidad of especialidades" [value]="especialidad.nombre">
+            {{ especialidad.nombre }}
+          </ion-select-option>
+        </ion-select>
+
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Teléfono</ion-label>
+        <ion-input type="tel" placeholder="+34-888-888-888" [(ngModel)]="doctor.telefono"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input [(ngModel)]="doctor.correoElectronico"></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" (click)="agregarDoctor()">Agregar</ion-button>
+
+      <!-- Mensaje de estado -->
+      <div *ngIf="mensaje">
+        {{ mensaje }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Buscar Doctor</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Buscar Doctor Especialidad -->
+      <ion-item>
+        <ion-label position="floating">Especialidad</ion-label>
+        <ion-select placeholder="Especialidad" [(ngModel)]="specialtyBuscar">
+          <!--En el ion-select, se ha agregado el evento (ionChange) para llamar al método
+            loadDoctorsBySpecialty() cada vez que se selecciona una especialidad.
+            Esto asegura que se carguen y muestren los doctores correspondientes
+            a la especialidad seleccionada.-->
+          <ion-select-option *ngFor="let especialidad of especialidades" [value]="especialidad.nombre">
+            {{ especialidad.nombre }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button expand="full" (click)="buscarDoctorPorEspecialidad(specialtyBuscar)">Buscar</ion-button>
+
+      <!-- Buscar Doctor DNI -->
+      <ion-item>
+        <ion-label position="floating">DNI</ion-label>
+        <ion-input [(ngModel)]="dniBuscar"></ion-input>
+      </ion-item>
+      <ion-button expand="full" (click)="buscarDoctorPorDNI(dniBuscar)">Buscar</ion-button>
+
+      <!-- Mensaje de resultado de búsqueda -->
+      <div *ngIf="doctorsEncontrados.length === 0 && mensajeBusq">
+        {{ mensajeBusq }}
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista de doctores encontrados -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title *ngIf="doctorsEncontrados.length > 0">Doutores Encontrados</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list></ion-list>
+      <ion-label *ngIf="doctorsEncontrados.length > 0">Lista de doutores encontrados - Selecione un doutor para
+        modificar</ion-label>
+      <ion-list>
+        <ion-item *ngFor="let doctor of doctorsEncontrados">
+          <ion-label>{{ doctor.nombre }} - {{ doctor.especialidad }}</ion-label>
+          <ion-button slot="end" (click)="seleccionarDoctor(doctor)">Seleccionar</ion-button>
+          <ion-button slot="end" color="danger" (click)="borrarDoctor(doctor.id)">Eliminar</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="doctorSeleccionado">
+    <ion-card-header>
+      <ion-card-title>Modificar Doutor</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Modificar Doctor Form -->
+      <ion-item>
+        <ion-label position="floating">DNI</ion-label>
+        <ion-input [(ngModel)]="doctorSeleccionado.dni"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Nome</ion-label>
+        <ion-input [(ngModel)]="doctorSeleccionado.nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Sobrenome</ion-label>
+        <ion-input [(ngModel)]="doctorSeleccionado.apellidos"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Número Colegiado</ion-label>
+        <ion-input [(ngModel)]="doctorSeleccionado.nColegiado"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Especialidade</ion-label>
+        <ion-select placeholder="Especialidad" [(ngModel)]="doctorSeleccionado.especialidad">
+          <!--En el ion-select, se ha agregado el evento (ionChange) para llamar al método
+            loadDoctorsBySpecialty() cada vez que se selecciona una especialidad.
+            Esto asegura que se carguen y muestren los doctores correspondientes
+            a la especialidad seleccionada.-->
+          <ion-select-option *ngFor="let especialidad of especialidades" [value]="especialidad.nombre">
+            {{ especialidad.nombre }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Telefone</ion-label>
+        <ion-input [(ngModel)]="doctorSeleccionado.telefono"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">E-mail</ion-label>
+        <ion-input [(ngModel)]="doctorSeleccionado.correoElectronico"></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" (click)="modificarDoctor()">Guardar</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

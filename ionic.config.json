@@ -1,0 +1,7 @@
+{
+  "name": "ClinicaMassagem",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Boton menú lateral -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="font-family: 'Kanit', sans-serif; font-weight: 400"
+      >Especialidades médicas</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+  <ion-list>
+    <ion-item>
+      <ion-label>
+        <h1>Buscador por especialidad</h1>
+        <p>
+          Encuentre todas las especialidades que ofrecemos y los doctores
+          especialistas
+        </p></ion-label
+      >
+    </ion-item>
+    <ion-item>
+      <ion-label>Selecciona una especialidad</ion-label>
+      <ion-select
+        placeholder="Especialidad"
+        [(ngModel)]="selectedSpecialty"
+        (ionChange)="loadDoctorsBySpecialty()"
+      >
+        <!--En el ion-select, se ha agregado el evento (ionChange) para llamar al método
+          loadDoctorsBySpecialty() cada vez que se selecciona una especialidad.
+          Esto asegura que se carguen y muestren los doctores correspondientes
+          a la especialidad seleccionada.-->
+        <ion-select-option
+          *ngFor="let especialidad of especialidades"
+          [value]="especialidad"
+        >
+          {{ especialidad.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <!-- Muestra los detalles de la especialidad seleccionada -->
+  <ion-card *ngIf="selectedSpecialty">
+    <ion-card-header>
+      <ion-card-title>{{ selectedSpecialty.nombre }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          {{ selectedSpecialty.descripcion }}
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <p>Doctores:</p>
+        <ion-item *ngFor="let doctor of selectedSpecialty.doctores">
+          {{ doctor.nombre }} {{ doctor.apellidos }}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-card>
+</ion-content>
